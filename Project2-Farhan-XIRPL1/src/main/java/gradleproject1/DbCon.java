@@ -5,14 +5,14 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author asus
+ * @author HanRey
  */
  public class DbCon {
     public static Connection getConn(String host, String port, String username, String password, String dataBaseName) {
         String configJdbc = "jdbc:mysql://" + host + ":" + port + "/" + dataBaseName;
         Connection conn = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(configJdbc,
             username, password);
             System.out.println("Koneksi Berhasil");

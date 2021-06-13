@@ -6,6 +6,7 @@
 package gradleproject1;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -33,7 +34,7 @@ public class Main extends javax.swing.JFrame {
     dtm = new DefaultTableModel(null, kolom);
     try {
       Statement stmt = koneksi.createStatement();
-      String query = "SELECT * FROM t_siswa";
+      String query = "SELECT * FROM t_siswa;";
       ResultSet rs = stmt.executeQuery(query);
       int no = 1;
       while (rs.next()) {
@@ -160,19 +161,43 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHapusActionPerformed
-        // TODO add your handling code here:
+        String idWhoWantToBeDelete = tbl_siswa.getValueAt(baris, 0).toString();
+        try {
+          // TODO add your handling code here:
+          Statement stmt = koneksi.createStatement();
+          String query =
+            "DELETE FROM t_siswa WHERE nis = '" + idWhoWantToBeDelete + "';";
+          int berhasil = stmt.executeUpdate(query);
+          if (berhasil == 1) {
+            JOptionPane.showMessageDialog(null, " Data Berhasil Dihapus");
+            dtm.getDataVector().removeAllElements();
+            showData();
+          } else {
+            JOptionPane.showMessageDialog(null, " Data Gagal Dihapus");
+          }
+        } catch (SQLException ex) {
+          ex.printStackTrace();
+        }
     }//GEN-LAST:event_cmdHapusActionPerformed
 
-    private void cmdEditActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void cmdEditActionPerformed(java.awt.event.ActionEvent evt) {  
+        String nis = tbl_siswa.getValueAt(baris, 1).toString();
+        ManageData tambahData = new ManageData(this, true, "Edit", nis);
+        tambahData.setVisible(true);
         // TODO add your handling code here:
     }
-    private void cmdTambahActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void cmdTambahActionPerformed(java.awt.event.ActionEvent evt) {
+        ManageData tambahData = new ManageData(this, true,"Tambah" ,"");
+        tambahData.setVisible(true);
         // TODO add your handling code here:
     }
     private void cmdRefreshActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+        showData();
     }
-    private void tbl_siswaMouseClicked(java.awt.event.MouseEvent evt) {                                         
+    int baris;
+    private void tbl_siswaMouseClicked(java.awt.event.MouseEvent evt) {   
+        baris = tbl_siswa.getSelectedRow();
         // TODO add your handling code here:
     }
     /**
